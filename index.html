@@ -56,15 +56,17 @@
         #capture-area {
             display: inline-block;
             background-color: var(--deep-bg);
+            /* Match the border radius here too so the background doesn't peek out sharply */
+            border-radius: 24px;
         }
 
-        /* CARD BLOCK - Made square for perfect sharing/cropping */
+        /* CARD BLOCK */
         .card-container {
             position: relative;
             width: 380px; /* Fixed width for consistent sharing */
             background: linear-gradient(145deg, #064E3B, #022c22);
             border: 6px solid var(--primary-gold);
-            border-radius: 0px; /* Removed rounded corners as requested */
+            border-radius: 24px; /* Added beautifully rounded corners */
             padding: 40px 25px;
             text-align: center;
             box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.8);
@@ -293,12 +295,12 @@
         </div>
         
         <div class="button-group">
-            <input type="file" id="imageInput" accept="image/*">
+            <input type="file" id="imageInput" accept="image/*" style="display: none;">
             <button class="btn btn-gold" onclick="document.getElementById('imageInput').click()">
                 <span>📷</span> Add/Change Photo
             </button>
             <button class="btn btn-blue" onclick="handleShare()">
-                <span>📤</span> Share on WhatsApp
+                <span>📤</span> Share / Download Card
             </button>
         </div>
     </div>
@@ -345,12 +347,12 @@
             try {
                 await document.fonts.ready;
                 
-                // Target the card block directly to remove extra background padding
-                const cardBlock = document.getElementById('card-block');
+                // Target the capture area wrapper instead to make sure rounded corners are handled nicely
+                const captureArea = document.getElementById('capture-area');
                 
-                const canvas = await html2canvas(cardBlock, {
+                const canvas = await html2canvas(captureArea, {
                     scale: 3, 
-                    backgroundColor: '#011611', // Force solid background matching the card's dark theme
+                    backgroundColor: null, // Allow transparency to handle rounded corners
                     useCORS: true,
                     logging: false
                 });
