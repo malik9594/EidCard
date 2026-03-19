@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eid Mubarak Greeting Card</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Library to capture the card as an image -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+
+        :root {
+            --primary-gold: #D4AF37;
+            --dark-emerald: #064E3B;
+            --accent-glow: rgba(212, 175, 55, 0.4);
+        }
+
+        body {
+            background-color: #011611;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 50%, #0a2e24 0%, #011611 100%);
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: twinkle var(--duration) infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .card-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px; /* Better for mobile displays */
+            background: linear-gradient(145deg, #064E3B, #022c22);
+            border: 4px solid var(--primary-gold);
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .islamic-pattern {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.08;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l5.878 18.09h19.022L39.46 29.27 45.338 47.36 30 36.18 14.662 47.36 20.54 29.27 5.1 18.09h19.022L30 0z' fill='%23D4AF37'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .photo-frame {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            border: 5px solid var(--primary-gold);
+            background: rgba(255,255,255,0.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            z-index: 10;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center 15%; 
+            display: block;
+        }
+
+        .photo-placeholder-text {
+            position: absolute;
+            color: var(--primary-gold);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 15px;
+            line-height: 1.2;
+        }
+
+        .wish-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            color: var(--primary-gold);
+            margin-bottom: -5px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+        }
+
+        .recipient-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            word-wrap: break-word;
+        }
+
+        .message-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #f3f4f6;
+            margin-bottom: 15px;
+            font-weight: 300;
+            padding: 0 10px;
+            word-wrap: break-word;
+        }
+
+        .sender-name-display {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.6rem;
+            color: var(--primary-gold);
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+
+        .company-credit {
+            font-size: 0.65rem;
+            color: var(--primary-gold);
+            opacity: 0.5;
+            margin-top: 15px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .controls {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            z-index: 100;
+            width: 100%;
+            max-width: 400px;
+            padding-bottom: 40px;
+        }
+
+        .input-group {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .text-input, .textarea-input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 2px solid var(--primary-gold);
+            background: rgba(255,255,255,0.08);
+            color: white;
+            outline: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .textarea-input {
+            height: 80px;
+            resize: none;
+        }
+
+        .text-input:focus, .textarea-input:focus {
+            background: rgba(255,255,255,0.15);
+            border-color: #fff;
+        }
+
+        .button-group {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-gold { background: var(--primary-gold); color: #011611; }
+        .btn-blue { background: #2563EB; color: white; }
+
+        .btn:active { transform: scale(0.98); }
+
+        #share-message {
+            position: fixed;
+            bottom: 20px;
+            background: #D4AF37;
+            color: #011611;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            display: none;
+            z-index: 200;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 480px) {
+            .card-container {
+                max-width: 100%;
+            }
+            .wish-title {
+                font-size: 3rem;
+            }
+            .recipient-name {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stars" id="star-container"></div>
+    <div id="share-message">Creating Image...</div>
+
+    <!-- The Block of Card to be Shared -->
+    <div class="card-container animate__animated animate__fadeIn" id="printable-card">
+        <div class="islamic-pattern"></div>
+        
+        <div class="photo-frame" id="photo-frame">
+            <span class="photo-placeholder-text" id="placeholder-text">Tap "Add Photo" Below</span>
+            <img src="" id="display-image" alt="Recipient" style="display: none;">
+        </div>
+
+        <h1 class="wish-title">Eid Mubarak</h1>
+        <h2 class="recipient-name" id="display-recipient">Kazim Raza</h2>
+        
+        <p class="message-text" id="display-message">
+            May Allah bless you with happiness and grace your home with warmth and peace. Have a wonderful Eid celebration!
+        </p>
+
+        <div class="sender-name-display" id="display-sender"></div>
+
+        <div class="mt-2 flex justify-center space-x-3 text-xl opacity-40">
+            <span>☪</span><span>★</span><span>☪</span>
+        </div>
+
+        <div class="company-credit">Created by: QaimDev</div>
+    </div>
+
+    <!-- Controls UI -->
+    <div class="controls">
+        <div class="input-group">
+            <input type="text" id="recipientInput" class="text-input" placeholder="Recipient Name" value="Kazim Raza">
+            <textarea id="messageInput" class="textarea-input" placeholder="Edit Your Message">May Allah bless you with happiness and grace your home with warmth and peace. Have a wonderful Eid celebration!</textarea>
+            <input type="text" id="senderInput" class="text-input" placeholder="Sender Name (e.g. From: Ali)">
+        </div>
+        
+        <div class="button-group">
+            <input type="file" id="imageInput" accept="image/*">
+            <button class="btn btn-gold" onclick="document.getElementById('imageInput').click()">
+                <span>📷</span> Add/Change Photo
+            </button>
+            <button class="btn btn-blue" onclick="handleShare()">
+                <span>📤</span> Share on WhatsApp / Mobile
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const recipientInput = document.getElementById('recipientInput');
+        const messageInput = document.getElementById('messageInput');
+        const senderInput = document.getElementById('senderInput');
+        
+        const displayImage = document.getElementById('display-image');
+        const placeholderText = document.getElementById('placeholder-text');
+        const displayRecipient = document.getElementById('display-recipient');
+        const displayMessage = document.getElementById('display-message');
+        const displaySender = document.getElementById('display-sender');
+        const shareMsg = document.getElementById('share-message');
+
+        // Update Recipient Name
+        recipientInput.addEventListener('input', (e) => {
+            displayRecipient.innerText = e.target.value;
+        });
+
+        // Update Message Text
+        messageInput.addEventListener('input', (e) => {
+            displayMessage.innerText = e.target.value;
+        });
+
+        // Update Sender Name
+        senderInput.addEventListener('input', (e) => {
+            displaySender.innerText = e.target.value;
+        });
+
+        // Handle Image Upload
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    displayImage.src = event.target.result;
+                    displayImage.style.display = 'block';
+                    placeholderText.style.display = 'none';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Capture and Share Logic
+        async function handleShare() {
+            if (!displayImage.src || displayImage.style.display === 'none') {
+                alert("Please add a photo first!");
+                return;
+            }
+
+            shareMsg.style.display = 'block';
+            shareMsg.innerText = "Processing Card...";
+
+            try {
+                const card = document.getElementById('printable-card');
+                
+                // Capture the card with high scale for clarity
+                const canvas = await html2canvas(card, {
+                    scale: 3,
+                    backgroundColor: null,
+                    useCORS: true,
+                    logging: false
+                });
+
+                canvas.toBlob(async (blob) => {
+                    const fileName = `Eid_Card_${recipientInput.value.replace(/\s+/g, '_')}.png`;
+                    const file = new File([blob], fileName, { type: "image/png" });
+                    
+                    // Native Web Share API (Best for Mobile WhatsApp/Email)
+                    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                        try {
+                            await navigator.share({
+                                files: [file],
+                                title: 'Eid Mubarak Greeting',
+                                text: `Eid Mubarak to ${recipientInput.value}! Created by QaimDev.`
+                            });
+                        } catch (shareErr) {
+                            if (shareErr.name !== 'AbortError') throw shareErr;
+                        }
+                        shareMsg.style.display = 'none';
+                    } else {
+                        // Fallback: Automatic Download for PC or Unsupported Browsers
+                        const link = document.createElement('a');
+                        link.download = fileName;
+                        link.href = canvas.toDataURL("image/png");
+                        link.click();
+                        shareMsg.innerText = "Saved to Gallery! You can now share it manually.";
+                        setTimeout(() => shareMsg.style.display = 'none', 4000);
+                    }
+                }, "image/png");
+
+            } catch (err) {
+                console.error(err);
+                shareMsg.innerText = "Error. Please try again.";
+                setTimeout(() => shareMsg.style.display = 'none', 3000);
+            }
+        }
+
+        // Generate Background Stars
+        const starContainer = document.getElementById('star-container');
+        for (let i = 0; i < 80; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 2 + 1 + 'px';
+            star.style.width = size; star.style.height = size;
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+            starContainer.appendChild(star);
+        }
+    </script>
+</body>
+</html>
